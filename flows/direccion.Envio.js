@@ -14,7 +14,7 @@ import pago from "./pago.js";
 const maxTries = 3;
 const Direccion = addKeyword(EVENTS.ACTION).addAnswer(
     ["Envie su 📍Ubicacion. Por favor que NO sea escrita"],
-    { capture: true},
+    { delay: 2000,capture: true},
     async (ctx, { state, fallBack, endFlow, gotoFlow }) => {
       //FuncionClas
       const attemptHandler = new AttemptHandler(state, maxTries);

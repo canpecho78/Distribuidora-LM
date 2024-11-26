@@ -1,4 +1,4 @@
-
+//@ts-check
 import { addKeyword,EVENTS } from "@builderbot/bot";
 //Funciones
 import AttemptHandler from "../funciones/intentosFallidos.js";
@@ -6,23 +6,23 @@ import AttemptHandler from "../funciones/intentosFallidos.js";
 
 import moment from 'moment-timezone'
 //Services
-import GoogleSheetService from "../services/sheets/index.js";
+//import GoogleSheetService from "../services/sheets/index.js";
 
 
 //Flujos
 
 
 
-const GOOGLE_SHEET_ID = "1pc9J1akNIPvcIhXJ8oicKYw7kk7JPWG2LCO3vR3okdM"; // ID de tu hoja de cálculo
-const googleSheet = new GoogleSheetService(GOOGLE_SHEET_ID);
+//const GOOGLE_SHEET_ID = "1pc9J1akNIPvcIhXJ8oicKYw7kk7JPWG2LCO3vR3okdM"; // ID de tu hoja de cálculo
+//const googleSheet = new GoogleSheetService(GOOGLE_SHEET_ID);
 
 const maxTries = 3;
 const pago = addKeyword(EVENTS.ACTION)
   .addAnswer([
     "\nCómo desea realizar el pago?",
-    "\n1️⃣-Efectivo","2️⃣-Transferencia", "\nCUENTAS BANCARIAS","BHD: 22014710011","BANRECERVAS: 9600783785","POPULAR: 835355330","SANTA CRUZ: 11311000005771"],
+    "\n1️⃣-Efectivo","2️⃣-Transferencia", "\nCUENTAS BANCARIAS","\nBHD: 22014710011","\nBANRECERVAS: 9600783785","\nPOPULAR: 835355330","\nSANTA CRUZ: 11311000005771"],
     {
-      capture: true,
+      delay: 2000,capture: true
     },
     async (ctx, { state, endFlow,fallBack }) => {
       //FuncionClass
@@ -62,7 +62,7 @@ const pago = addKeyword(EVENTS.ACTION)
     "\nReferencias para la entrega / Comentario / Factura fiscal / Cualquier sugerencia escribalo ¡Aqui!","\n_O si deseas retroceder o cancelar su pedido seleccione una de estas *opciones*_",
      "\n1️⃣-Retroceder","\n2️⃣-Cancelar pedido"],
     {
-      capture: true,
+      delay: 2000,capture: true,
     },
     async (ctx, { state, endFlow, gotoFlow }) => {
         
@@ -76,9 +76,9 @@ const pago = addKeyword(EVENTS.ACTION)
   .addAnswer(
     [
       "¡Perfecto! hemos recibido su orden.",
-      "Nuestro mensajero le comunicará cuando esté de camino.",
-    ],
-    null,
+      "Nuestro mensajero le comunicará cuando esté de camino."
+    ],{delay: 2000},
+    
     async (ctx, { state, flowDynamic }) => {
       
       const currentState = state.getMyState();
@@ -108,36 +108,36 @@ const pago = addKeyword(EVENTS.ACTION)
   
       const numeroOrden = generarNumeroOrden();
       const fecha = new Date();
-      const dia = fecha.getDate().toString().padStart(2, "0");
-      const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
-      const año = fecha.getFullYear();
-      const fechaNumerica = `${dia}-${mes}-${año}`;
+      //const dia = fecha.getDate().toString().padStart(2, "0");
+      //const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+      //const año = fecha.getFullYear();
+      //const fechaNumerica = `${dia}-${mes}-${año}`;
     
-      const codigo = 5;
+      const codigo = 2;
     
     
     
       // Guardar la orden en Google Sheets
-      try {
-        await googleSheet.saveOrder({
-          numeroOrden: numeroOrden,
-          fecha: fechaNumerica,
-          hora: `${hora}:${minutos}`,
-          pedido: currentState.pedido,
-          combo: currentState.combo,
-          algoMasExtra: currentState.algoMasExtra,
-          nombre: currentState.nombre,
-          telefono: ctx.from,
-          direccionEnvio: currentState.direccionEnvio,
-          referenciaOcomentario: currentState.referenciaOcomentario,
-          efectivoTarjeta: currentState.efectivoTarjeta,
-        });
+      // try {
+      //   await googleSheet.saveOrder({
+      //     numeroOrden: numeroOrden,
+      //     fecha: fechaNumerica,
+      //     hora: `${hora}:${minutos}`,
+      //     pedido: currentState.pedido,
+      //     combo: currentState.combo,
+      //     algoMasExtra: currentState.algoMasExtra,
+      //     nombre: currentState.nombre,
+      //     telefono: ctx.from,
+      //     direccionEnvio: currentState.direccionEnvio,
+      //     referenciaOcomentario: currentState.referenciaOcomentario,
+      //     efectivoTarjeta: currentState.efectivoTarjeta,
+      //   });
   
-        console.log("Orden guardada en Google Sheets");
+      //   console.log("Orden guardada en Google Sheets");
   
-      } catch (error) {
-        console.error("Error guardando la orden en Google Sheets:", error);
-      }
+      // } catch (error) {
+      //   console.error("Error guardando la orden en Google Sheets:", error);
+      // }
   
 
 
@@ -153,7 +153,7 @@ const pago = addKeyword(EVENTS.ACTION)
           body: JSON.stringify({
             codigo,
             numeroOrden,
-            fecha: fechaNumerica,
+            fecha: fecha,
             hora: `${hora}:${minutos}`,
             pedido: currentState.pedido,
             combo: currentState.combo,
@@ -192,64 +192,64 @@ const pago = addKeyword(EVENTS.ACTION)
         await provider.sendText(`${ctx.from}@c.us`, "¡Tu! Pedido está en camino, mantente pendiente, es posible que el mensajero te haga una llamada." );
         }, tiempoEsperaMilisegundos2);*/
         
-        function calcularTiempoHastaHoraEspecifica(
-          hora,
-          minutos = 0,
-          segundos = 0,
-          milisegundos = 0
-        ) {
-          const ahora = moment().tz("Etc/GMT+4");
-          const destino = moment().tz("Etc/GMT+4");
+        // function calcularTiempoHastaHoraEspecifica(
+        //   hora,
+        //   minutos = 0,
+        //   segundos = 0,
+        //   milisegundos = 0
+        // ) {
+        //   const ahora = moment().tz("Etc/GMT+4");
+        //   const destino = moment().tz("Etc/GMT+4");
           
-          destino.set({
-            hour: hora,
-            minute: minutos,
-            second: segundos,
-            millisecond: milisegundos,
-          });
+        //   destino.set({
+        //     hour: hora,
+        //     minute: minutos,
+        //     second: segundos,
+        //     millisecond: milisegundos,
+        //   });
           
-          if (ahora > destino) {
-            destino.add(1, "day");
-          }
+        //   if (ahora > destino) {
+        //     destino.add(1, "day");
+        //   }
           
-          return destino.diff(ahora);
-        }
+        //   return destino.diff(ahora);
+        // }
         
-        function iniciarProcesoDeEliminacion() {
-          console.log(
-            "Iniciando el proceso de eliminación: " +
-            moment().tz("Etc/GMT+4").format()
-          );
+        // function iniciarProcesoDeEliminacion() {
+        //   console.log(
+        //     "Iniciando el proceso de eliminación: " +
+        //     moment().tz("Etc/GMT+4").format()
+        //   );
           
-          const eliminarDatoCada = 10000;
-          const totalDeDatosAEliminar = 40;
-          let contadorDeDatosEliminados = 0;
+        //   const eliminarDatoCada = 10000;
+        //   const totalDeDatosAEliminar = 40;
+        //   let contadorDeDatosEliminados = 0;
           
-          const intervalId = setInterval(async () => {
-            if (contadorDeDatosEliminados >= totalDeDatosAEliminar) {
-              clearInterval(intervalId);
-              console.log("Proceso de eliminación completado.");
-            } else {
-              await googleSheet.clearOrdersData();
-              contadorDeDatosEliminados++;
-              console.log(
-                `Dato eliminado. Total eliminados: ${contadorDeDatosEliminados}`
-              );
-            }
-          }, eliminarDatoCada);
-        }
+        //   const intervalId = setInterval(async () => {
+        //     if (contadorDeDatosEliminados >= totalDeDatosAEliminar) {
+        //       clearInterval(intervalId);
+        //       console.log("Proceso de eliminación completado.");
+        //     } else {
+        //       await googleSheet.clearOrdersData();
+        //       contadorDeDatosEliminados++;
+        //       console.log(
+        //         `Dato eliminado. Total eliminados: ${contadorDeDatosEliminados}`
+        //       );
+        //     }
+        //   }, eliminarDatoCada);
+        // }
         
-        const tiempoHastaLaHoraEspecifica = calcularTiempoHastaHoraEspecifica(1);
+        // const tiempoHastaLaHoraEspecifica = calcularTiempoHastaHoraEspecifica(1);
         
-        setTimeout(() => {
-          iniciarProcesoDeEliminacion();
-          console.log(
-            `Tiempo hasta la ejecución: ${tiempoHastaLaHoraEspecifica}ms`
-          );
+        // setTimeout(() => {
+        //   iniciarProcesoDeEliminacion();
+        //   console.log(
+        //     `Tiempo hasta la ejecución: ${tiempoHastaLaHoraEspecifica}ms`
+        //   );
           
-          // Y luego repetir cada 24 horas
-          setInterval(iniciarProcesoDeEliminacion, 24 * 60 * 60 * 1000);
-        }, tiempoHastaLaHoraEspecifica);
+        //   // Y luego repetir cada 24 horas
+        //   setInterval(iniciarProcesoDeEliminacion, 24 * 60 * 60 * 1000);
+        // }, tiempoHastaLaHoraEspecifica);
       }
     );
     

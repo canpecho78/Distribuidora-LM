@@ -1,20 +1,36 @@
-//@ts-check
+// @ts-nocheck
 import { addKeyword } from "@builderbot/bot";
 // Funciones
 import AttemptHandler from "../funciones/intentosFallidos.js";
+import  MongoDBClient  from "../mongo/mongoDB.js";
 // Flow
 import updateOrder from "./opciones.pedido.js";
 import { EVENTS } from "@builderbot/bot";
+import cancelar from "./cancelar.order.js";
 
 const maxTries = 3;
 
 const catalogo = addKeyword(EVENTS.ORDER)
-  .addAction(async (_, { flowDynamic }) => {
-    await flowDynamic('*Menu:*\nhttps://wa.me/c/18293910869');
+  .addAction({delay: 2000},async (ctx, {provider,gotoFlow}) => {
+    const input = ctx.from.trim();
+    const orderExists = await MongoDBClient.ValidExistsData("","","","","","","",input);
+    const client = orderExists;
+
+    if (client) {
+      const { pedido, algoMasExtra, nombre, telefono, direccionEnvio, referenciaOcomentario, efectivoTarjeta, estado } = client;
+      const mensaje = `*Ya tienes una orden con los siguientes detalles:* \n\n*Pedido:* ${pedido} \n*Extra:* ${algoMasExtra || "Sin extra"} \n*Nombre:* ${nombre} \n*Tel:* ${telefono} \n*Direccion:* ${direccionEnvio} \n*Referencia:* ${referenciaOcomentario} \n*Efectivo o tarjeta:* ${efectivoTarjeta} \n*Estado:* ${estado || "Pendiente"}`;
+        await provider.sendText(ctx.key.remoteJid, mensaje);
+        return gotoFlow(cancelar);
+    }else{
+      return 
+    }
+    
+    
   })
+  //const continuar = addKeyword(EVENTS.ACTION)
   .addAnswer(
-    "_Arma tu carrito y envíalo_",
-    { capture: true },
+    ["_Arma tu carrito y envíalo_","\n*Menu:*\nhttps://wa.me/c/18293910869"],
+    {delay: 2000,capture: true },
     async (ctx, { state, gotoFlow, endFlow, fallBack, provider }) => {
 
       // Inicializar AttemptHandler para gestionar intentos

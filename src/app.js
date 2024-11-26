@@ -26,6 +26,13 @@ import {
   import recoger from "../flows/opciones.entrega.js";
   import Direccion from "../flows/direccion.Envio.js";
   import agentFlow from "../flows/solicitud.support.js";
+import cuentasBancarias from "../flows/cuentasBancarias.js";
+import localmanoguayabo from "../flows/local.manoguayabo.js";
+import cancelar from "../flows/cancelar.order.js";
+import updatedOrderData from "../flows/updated.order.js";
+import verificarEstado from "../flows/verificar.estado.js";
+import masOpciones from "../flows/masOpciones.js";
+import detalles from "../flows/supportData.js";
   
   
   const PORT = process.env.PORT ?? 3008;
@@ -81,6 +88,13 @@ const main = async () => {
         recoger,
         Direccion,
         catalogo,
+        cuentasBancarias,
+        localmanoguayabo,
+        cancelar,
+        updatedOrderData,
+        verificarEstado,
+        masOpciones,
+        detalles
     ])
 
   
@@ -115,13 +129,28 @@ const main = async () => {
           }
       
           // Construir el mensaje basado en el nuevo estado
-          const message = `Tu pedido ha sido actualizado. Nuevo estado: *${nuevoEstado}*`;
+          const message = `Su pedido se esta *${nuevoEstado}*`;
+          const message2 = `Su pedido esta *${nuevoEstado}*`;
+          const message3 = `Su pedido se encuentra *${nuevoEstado}*`;
+          const message4 = `Su pedido a sido  *${nuevoEstado}*`;
+          const message5 = `Su pedido a sido *${nuevoEstado}*`;
           
           // Crear un objeto de opciones vacío (puedes agregar más opciones si es necesario)
           const options = {}; // Aquí puedes agregar botones o medios si lo necesitas en el futuro
     
           // Enviar el mensaje por WhatsApp
-          await bot.sendMessage(telefono, message, options);
+          if (nuevoEstado === 'Procesando') {
+            await bot.sendMessage(telefono, message, options);
+          } else if (nuevoEstado === 'Listo para enviar') {
+            await bot.sendMessage(telefono, message2, options);
+          } else if (nuevoEstado === 'Pendiente') {
+            await bot.sendMessage(telefono, message3, options);
+          } else if (nuevoEstado === 'Enviado') {
+            await bot.sendMessage(telefono, message4, options);
+          } else if (nuevoEstado === 'Cancelado') {
+            await bot.sendMessage(telefono, message5, options);
+          }
+          
       
           // Responder al cliente
           res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -164,6 +193,9 @@ const main = async () => {
             const { number, intent } = req.body
             if (intent === 'remove') bot.blacklist.remove(number)
             if (intent === 'add') bot.blacklist.add(number)
+
+             
+                
 
               
 

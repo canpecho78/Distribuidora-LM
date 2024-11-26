@@ -1,4 +1,4 @@
-import {companyInfo, distribuidoraDos} from './company.js';
+import companyInfo from './mangangua.js';
 import maxDistanceDelivery from './maxDistance.js';
 
-export {companyInfo,maxDistanceDelivery,distribuidoraDos}
+export {companyInfo,maxDistanceDelivery}

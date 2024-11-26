@@ -1,6 +1,6 @@
 /**
  * Distancia máxima que permite el delivery , expresada en Kilómetros
  */
-const maxDistanceDelivery = 10
+const maxDistanceDelivery = 15
 
 export default maxDistanceDelivery
