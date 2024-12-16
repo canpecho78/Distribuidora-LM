@@ -192,7 +192,7 @@ const main = async () => {
           const { number, intent } = req.body
           const formatNumber = `${number}@s.whatsapp.net`
           if (intent === 'add') {
-            await adapterProvider.sendText(formatNumber,'Un agente le va a contactar')
+            await adapterProvider.sendText(formatNumber,'Un agente ha sido asignado a esta conversación')
             bot.blacklist.add(number)
           }
           if (intent === 'remove') {
