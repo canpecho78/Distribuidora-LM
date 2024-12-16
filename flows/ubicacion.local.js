@@ -8,7 +8,7 @@ import companyInfo2 from "../utils/manoguayabo.js";
 import bienvenida from "./bienvenido.usuario.js";
 
 const location = addKeyword("@!#@").addAnswer(
-    ["Ubociaciones de nuestras DISTRIBUIDORAS." ],{},async (ctx, { provider}) => {
+    ["Ubicaciones de nuestras DISTRIBUIDORAS." ],{},async (ctx, { provider}) => {
 
       
       const number = ctx.key.remoteJid

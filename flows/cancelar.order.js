@@ -2,6 +2,7 @@ import { addKeyword,EVENTS } from "@builderbot/bot";
 import agentFlow from "./solicitud.support.js";
 import updatedOrderData from "./updated.order.js";
 
+//Esta es la funcion que se encarga de cancelar el pedido la cual se activa atraves de otro flujo que le envia una sen;al de activacion
 const cancelar = addKeyword(EVENTS.ACTION).addAnswer(
     ["Opcion-1️⃣","*Si deseas cancelar su pedido contacte con soporte*","\nOpcion-2️⃣","*Si deseas agregarle algo mas a su pedido*", "\n*Opcion-3️⃣ Gracias, eso es todo*"],
     { delay: 2000, capture: true },

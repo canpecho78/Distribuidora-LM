@@ -10,8 +10,10 @@ import generateLocationURL from "../funciones/linkGeo.js";
 //Flow
 import pago from "./pago.js";
 
-
+//Numero maximo de intentos fallidos
 const maxTries = 3;
+
+//Este flujo se encarga de pedirle la Ubicacion exacta del usuario y recibirla
 const Direccion = addKeyword(EVENTS.ACTION).addAnswer(
     ["Envie su 📍Ubicacion. Por favor que NO sea escrita"],
     { delay: 2000,capture: true},

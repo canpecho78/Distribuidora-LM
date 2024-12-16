@@ -4,7 +4,7 @@ import recoger from "./opciones.entrega.js";
 
 //Flow
 
-
+//Este flujo le pide el nombre real al usuario
 const flowName = addKeyword(["@5es3"], { sensitive: true }).addAnswer(
     "¿Cual es su nombre?",
     { capture: true},

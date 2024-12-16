@@ -12,8 +12,11 @@ import location from "./ubicacion.local.js";
 import masOpciones from "./masOpciones.js";
 import detalles from "./supportData.js";
 
-
+//Esta es la funcion que se encarga de dar la bienvenida al usuario, se activa con cualquier mensaje
 const bienvenida = addKeyword(EVENTS.WELCOME)
+
+//Esta funcion se encarga de verificar si el horario es correcto para que el usuario pueda interactuar con el bot
+//Si esta dentro del horario se le permite interactuar con el bot
   //   .addAction(async (ctx, { provider,endFlow }) => {
 
   //     if (verificarHorario(ctx, provider)) {
@@ -21,12 +24,14 @@ const bienvenida = addKeyword(EVENTS.WELCOME)
   //       }
 
   //     })
+  //Esta es la primera respuesta del bot la cual le da la bienvenida al usuario
   .addAction({ delay: 2000 }, async (ctx, { flowDynamic }) => {
     await flowDynamic(
-      `_Hola *${ctx.name}* Soy el asistente automatizado de *DISTRIBUIDORA MAÑON*._`
+      `_Hola *${ctx.name}* Soy el asistente automatizado de *TU NEGOCIO*._`
     );
   })
-  .addAnswer(["*_Seleccione una opcion_*", "\n1️⃣-Menu", "2️⃣-Soporte", "3️⃣-Ubicaciones", "\n\n4️⃣-Mas opciones => cuentas bancarias y verificar el estado de mi pedido"], { capture: true },
+  //Estas son varias opciones para el usuario con las que puede interactuar con el bot
+  .addAnswer(["*_Seleccione una opcion_*", "\n1️⃣-Menu", "2️⃣-Soporte", "3️⃣-Ubicaciones", "\n\n*4️⃣-Mas opciones => cuentas bancarias y verificar el estado de su pedido*"], { capture: true },
     async (ctx, { gotoFlow, fallBack }) => {
 
       const Opciones = ctx.body

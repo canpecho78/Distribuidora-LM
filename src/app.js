@@ -188,19 +188,23 @@ const main = async () => {
         '/v1/blacklist',
         handleCtx(async (bot, req, res) => {
           
-        
-            console.log(req.body)
-            const { number, intent } = req.body
-            if (intent === 'remove') bot.blacklist.remove(number)
-            if (intent === 'add') bot.blacklist.add(number)
-
-             
-                
-
-              
-
-            res.writeHead(200, { 'Content-Type': 'application/json' })
-            return res.end(JSON.stringify({ status: 'ok', number, intent }))
+        try {
+          const { number, intent } = req.body
+          const formatNumber = `${number}@s.whatsapp.net`
+          if (intent === 'add') {
+            await adapterProvider.sendText(formatNumber,'Un agente le va a contactar')
+            bot.blacklist.add(number)
+          }
+          if (intent === 'remove') {
+            await adapterProvider.sendText(formatNumber, 'El agente ha culminado la conversación')
+            bot.blacklist.remove(number)
+          }
+          
+          res.writeHead(200, { 'Content-Type': 'application/json' })
+          return res.end(JSON.stringify({ status: 'ok', number, intent }))
+        } catch (error) {
+          console.error("ERROR at blacklist", error)
+        }
         })
     )
   

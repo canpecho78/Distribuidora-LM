@@ -8,9 +8,15 @@ import updateOrder from "./opciones.pedido.js";
 import { EVENTS } from "@builderbot/bot";
 import cancelar from "./cancelar.order.js";
 
+//Numero maximo de intentos fallidos
 const maxTries = 3;
 
+//Este flujo se activa atraves de la opcion 1 del menu
 const catalogo = addKeyword(EVENTS.ORDER)
+
+//Esta repuesta lleva consigo la funcion de verificar si el usuario ya tiene una orden pendiente
+//Si el usuario tiene una orden pendiente se le da la opcion de cancelarla o agregar algo mas a su pedido ya pendiente
+//De no tener una ordenn pendiente el flujo continua con las opciones de realizar una orden
   .addAction({delay: 2000},async (ctx, {provider,gotoFlow}) => {
     const input = ctx.from.trim();
     const orderExists = await MongoDBClient.ValidExistsData("","","","","","","",input);

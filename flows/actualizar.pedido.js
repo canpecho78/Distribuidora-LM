@@ -5,13 +5,18 @@ import AttemptHandler from "../funciones/intentosFallidos.js";
 //Flow
 import flowName from "./flowName.js";
 
+//Esta funcion se encarga de determinar el numero de intentos fallidos del usuario
+//Si el usuario supera el numero de intentos fallidos se cierra el flujo y lo regresa al inicio
 const maxTries = 3;
+//Este se activa con cualquier mensaje del usuario
 const updatePedido = addKeyword(EVENTS.ACTION)
 
+//Esta es la primera repuesta del bot la cual le envia el menu al usuario
 .addAction(async (_, { flowDynamic }) => {
   await flowDynamic('*Menu:*\nhttps://wa.me/c/18293910869');
 })
 
+//Esta es la segunda respuesta del bot la cual le da le indica al usuario que envie su pedido desde el catalogo
 .addAnswer(
     "_Envie su nuevo pedido desde el catalogo_ ",
     { capture: true},
